@@ -1,0 +1,27 @@
+name: "AWS IaC Quality & Security Guardrails"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  security-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup OpenTofu / TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Run TFLint
+        run: |
+          tflint --init
+          tflint --recursive
+
+      - name: Run Checkov Static Code Analysis
+        uses: bridgecrewio/checkov-action@master
+        with:
+          framework: kubernetes,yaml,terraform
+          output_format: cli
+          soft_fail: false
