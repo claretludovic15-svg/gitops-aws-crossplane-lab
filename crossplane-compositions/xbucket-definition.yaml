@@ -1,0 +1,29 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xbuckets.storage.cloud.io
+spec:
+  group: storage.cloud.io
+  names:
+    kind: XBucket
+    plural: xbuckets
+  claimNames:
+    kind: BucketClaim
+    plural: bucketclaims
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                bucketName:
+                  type: string
+                region:
+                  type: string
+                  default: "eu-west-3"
+              required: ["bucketName"]

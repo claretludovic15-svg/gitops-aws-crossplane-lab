@@ -1,0 +1,10 @@
+apiVersion: storage.cloud.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: lab-s3-claim
+  namespace: default
+spec:
+  compositionSelector:
+    matchLabels: {}
+  bucketName: gitops-lab-s3-mah-bayii-2026
+  region: eu-west-3
