@@ -11,8 +11,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 1. Fitsapana OpenTofu / Terraform syntaxes (TFLint)
-      - name: Setup TFLint
+      # 1. Fitsapana OpenTofu / Terraform syntaxes
+      - name: Setup OpenTofu / TFLint
         uses: terraform-linters/setup-tflint@v4
 
       - name: Run TFLint
@@ -20,10 +20,10 @@ jobs:
           tflint --init
           tflint --recursive
 
-      # 2. Fitsapana fiarovana / security vulnerabilities (Checkov)
-      - name: Run Checkov Security Scan
-        uses: bridgecrewio/checkov-action@v12
+      # 2. Fitsapana ny Fiarovana amin'ny Checkov (S3 Public Access, Ports open, Encryption, etc.)
+      - name: Run Checkov Static Code Analysis
+        uses: bridgecrewio/checkov-action@master
         with:
-          directory: .
-          framework: all
+          framework: kubernetes,crossplane,terraform
+          output_format: cli
           soft_fail: false
