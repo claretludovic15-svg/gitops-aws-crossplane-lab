@@ -1,0 +1,29 @@
+name: "AWS IaC Quality & Security Guardrails"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  security-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Fitsapana OpenTofu / Terraform syntaxes (TFLint)
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Run TFLint
+        run: |
+          tflint --init
+          tflint --recursive
+
+      # 2. Fitsapana fiarovana / security vulnerabilities (Checkov)
+      - name: Run Checkov Security Scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: .
+          framework: all
+          soft_fail: false
