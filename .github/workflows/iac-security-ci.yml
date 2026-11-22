@@ -11,7 +11,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup OpenTofu / TFLint
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: OpenTofu Init & Validate
+        working-directory: infra/opentofu
+        run: |
+          tofu init -backend=false
+          tofu validate
+
+      - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
       - name: Run TFLint
@@ -25,3 +34,7 @@ jobs:
           framework: kubernetes,yaml,terraform
           output_format: cli
           soft_fail: false
+
+      - name: OpenTofu Plan
+        working-directory: infra/opentofu
+        run: tofu plan -input=false
