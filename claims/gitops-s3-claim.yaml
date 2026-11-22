@@ -1,0 +1,10 @@
+apiVersion: storage.cloud.io/v1alpha1
+kind: BucketClaim
+metadata:
+  name: gitops-s3-claim
+  namespace: default
+spec:
+  compositionSelector:
+    matchLabels: {}
+  bucketName: gitops-aws-s3-claim-2026
+  region: us-east-1
